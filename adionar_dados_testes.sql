@@ -16,4 +16,4 @@ values
 # INSERINDO DADOS NA TABELA MEDICAMENTO
 insert into medicacao(nome_medicamento, dosagem, horario, id_idoso)
 values
-	('dipirona', '10ml', '2026-03-24 20:20:00',3);
+	('dipirona', '10ml', '2026-03-24 20:20:00',1);

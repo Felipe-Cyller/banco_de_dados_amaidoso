@@ -38,12 +38,27 @@ create table medicacao(
 	id_medicacao integer primary key auto_increment,
     nome_medicamento varchar(100),
     dosagem varchar(100),
-    horario datetime,
+    dt_hora datetime,
     id_idoso integer not null,
     foreign key(id_idoso) references idoso(id_idoso)
 );
 # TABELA COMPROMISSO
--- create table compromisso();
+create table compromisso(
+
+	id_compromisso integer primary key auto_increment,
+    descricao varchar (100),
+    dt_hora datetime,
+    
+    id_responsavel integer not null,
+    foreign key(id_responsavel) references responsavel(id_responsavel),
+    
+    id_idoso integer not null,
+    foreign key(id_idoso) references idoso(id_idoso)
+    
+);
 
 # TABELA ANOTAÇÕES
--- create table anotacoes
+-- create table anotacoes();
+
+# TABELA ALIMENTAÇÃO
+-- create table alimentacao();

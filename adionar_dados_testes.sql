@@ -1,21 +1,47 @@
-use amaidoso; -- usando o bd
+USE amaidoso;
 
-# ADICIONANDO DADOS PARA TESTES
-    
-# INSERINDO DADOS NA TABELA RESPONSAVEL
-insert into responsavel(nome_responsavel, nome_usuario, telefone, email, senha)
-values
-	('davi brito', 'Dr Davi', '(11) 91867-8756', 'davicuidador26@gmail.com', '$Davi_lindão'),
-	('ronaldo cobresal', 'Ronaldo', '(11) 99055-8906', 'ronaldocobre@gmail.com', 'ronald.90##'),
-	('marcelo gourmet', 'gourmeti', '(67) 96782-2376', 'marcelo67gourmet@gmail.com', 'm.gourmet67');
+-- ===================== IDOSO =====================
+INSERT INTO idoso (nome, data_nascimento, sexo, observacao) VALUES
+('José da Silva', '1945-03-10', 'M', 'Diabético'),
+('Maria Oliveira', '1950-07-22', 'F', 'Hipertensa');
 
-# INSERINDO DADOS NA TABELA IDOSO
-insert into idoso(nome_idoso, nome_usuario, dt_nasc, sexo, cpf, observacoes, senha, id_responsavel)
-values
-	('jose','jose the big','1990-12-20', 'm','51500986524','é um velho muito chato','101010',1),
-	('arnalda','galao de agua','1950-09-23', 'f','51556398323','é uma velha legal','baile2001',1);
+-- ===================== RESPONSAVEL =====================
+INSERT INTO responsavel (nome, telefone, email, senha) VALUES
+('Carlos Silva', '11999999999', 'carlos@email.com', '123456'),
+('Ana Souza', '11988888888', 'ana@email.com', 'abcdef');
 
-# INSERINDO DADOS NA TABELA MEDICAMENTO
-insert into medicacao(nome_medicamento, dosagem, horario, id_idoso)
-values
-	('dipirona', '10ml', '2026-03-24 20:20:00',1);
+-- ===================== MEDICACAO =====================
+INSERT INTO medicacao (nome_medicamento, quantidade_dosagem, unidade_dosagem) VALUES
+('Paracetamol', 500, 'mg'),
+('Insulina', 10, 'ml');
+
+-- ===================== IDOSO x MEDICACAO =====================
+INSERT INTO idoso_medicacao (id_idoso, id_medicacao) VALUES
+(1, 1),
+(1, 2),
+(2, 1);
+
+-- ===================== LEMBRETE =====================
+INSERT INTO lembrete (descricao, data_hora_lembrete, endereco, id_responsavel, id_idoso) VALUES
+('Tomar remédio', '2026-04-05 08:00:00', 'Casa', 1, 1),
+('Consulta médica', '2026-04-06 10:00:00', 'Hospital', 2, 2),
+('Comprar remédio', '2026-04-07 15:00:00', 'Farmácia', 1, NULL);
+
+-- ===================== ANOTACAO =====================
+INSERT INTO anotacao (descricao, id_idoso) VALUES
+('Paciente apresentou melhora', 1),
+('Pressão alta hoje', 2);
+
+-- ===================== NOTIFICACAO =====================
+INSERT INTO notificacao (titulo, mensagem, data_envio_notificacao) VALUES
+('Hora do remédio', 'Está na hora de tomar o remédio', '2026-04-05 08:00:00'),
+('Confirmação', 'O idoso tomou a medicação', '2026-04-05 08:10:00');
+
+-- ===================== DESTINATARIO =====================
+-- Para idoso
+INSERT INTO destinatario (id_notificacao, id_idoso, lida) VALUES
+(1, 1, FALSE);
+
+-- Para responsável
+INSERT INTO destinatario (id_notificacao, id_responsavel, lida) VALUES
+(2, 1, FALSE);

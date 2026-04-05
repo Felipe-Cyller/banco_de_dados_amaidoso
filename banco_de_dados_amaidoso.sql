@@ -1,85 +1,106 @@
-# CRIAÇÃO DO BANCO DE DADOS
-create database amaidoso; -- criando o bd
-use amaidoso; -- usando o bd
+CREATE DATABASE amaidoso;
+USE amaidoso;
 
-#CRIAÇÃO DAS TABELAS
+-- ===================== IDOSO =====================
+CREATE TABLE idoso (
+    id_idoso INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    data_nascimento DATE,
+    sexo CHAR(1),
+    observacao TEXT
+) ENGINE=InnoDB;
 
-# TABELA RESPONSÁVEL
-create table responsavel(
+-- ===================== RESPONSAVEL =====================
+CREATE TABLE responsavel (
+    id_responsavel INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    telefone VARCHAR(25),
+    email VARCHAR(150),
+    senha VARCHAR(255) NOT NULL
+) ENGINE=InnoDB;
 
-	id_responsavel integer primary key auto_increment,
-    nome_responsavel varchar(100) not null,
-    nome_usuario varchar(15) not null,
-    telefone varchar(20) not null,
-    email varchar(50) not null,
-    senha varchar(20) not null
-);
+-- ===================== MEDICACAO =====================
+CREATE TABLE medicacao (
+    id_medicacao INT AUTO_INCREMENT PRIMARY KEY,
+    nome_medicamento VARCHAR(100) NOT NULL,
+    quantidade_dosagem DECIMAL(5,2),
+    unidade_dosagem VARCHAR(20)
+) ENGINE=InnoDB;
 
-# TABELA IDOSO
-create table idoso(
+-- ===================== IDOSO x MEDICACAO (N:N) =====================
+CREATE TABLE idoso_medicacao (
+    id_idoso INT,
+    id_medicacao INT,
 
-	id_idoso integer primary key auto_increment,
-	nome_idoso varchar(100) not null,
-    nome_usuario varchar(15) not null,
-	dt_nasc date not null,
-	sexo char(1),
-	cpf char(11),
-    observacoes text,
-    senha varchar(20) not null,
-    
-	-- RELAÇÃO COM CHAVE ESTRANGEIRA
-    id_responsavel integer not null,
-	foreign key(id_responsavel) references responsavel(id_responsavel)
-	-- references responsavel(id_responsavel)
-);
+    PRIMARY KEY (id_idoso, id_medicacao),
 
-# TABELA MEDICAÇÃO
-create table medicacao(
+    FOREIGN KEY (id_idoso)
+        REFERENCES idoso(id_idoso)
+        ON DELETE CASCADE,
 
-	id_medicacao integer primary key auto_increment,
-    nome_medicamento varchar(100),
-    dosagem varchar(100),
-    dt_hora datetime,
-    id_idoso integer not null,
-    foreign key(id_idoso) references idoso(id_idoso)
-    
-);
-# TABELA LEMBRETE
-create table lembrete(
+    FOREIGN KEY (id_medicacao)
+        REFERENCES medicacao(id_medicacao)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
 
-	id_lembrete integer primary key auto_increment,
-    descricao varchar (100),
-    dt_hora datetime, -- feito
-    endereco varchar(100),
-    
-    id_responsavel integer not null,
-    foreign key(id_responsavel) references responsavel(id_responsavel),
-    id_idoso integer not null,
-    foreign key(id_idoso) references idoso(id_idoso)
+-- ===================== LEMBRETE =====================
+CREATE TABLE lembrete (
+    id_lembrete INT AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(500) NOT NULL,
+    data_hora_lembrete DATETIME NOT NULL,
+    endereco VARCHAR(100),
 
-);
+    id_responsavel INT NOT NULL,
+    id_idoso INT NULL,
 
-# TABELA ANOTAÇÕES
-create table anotacoes(
-	
-    id_anotacoes integer primary key auto_increment,
-    descricao text,
-    
-    id_idoso integer not null,
-    foreign key(id_idoso) references idoso(id_idoso)
-);
+    FOREIGN KEY (id_responsavel)
+        REFERENCES responsavel(id_responsavel)
+        ON DELETE CASCADE,
 
-# TABELA NOTICAÇÃO
-create table notificacao(
+    FOREIGN KEY (id_idoso)
+        REFERENCES idoso(id_idoso)
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
 
-	id_notificacao integer primary key auto_increment,
-    titulo varchar(50) not null,
-    mensagem text not null,
-    dt_envio datetime not null,
-    
-    id_idoso integer not null,
-    foreign key(id_idoso) references idoso(id_idoso),
-    
-    id_responsavel integer not null,
-    foreign key(id_responsavel) references responsavel(id_responsavel)
-);
+-- ===================== ANOTACAO =====================
+CREATE TABLE anotacao (
+    id_anotacao INT AUTO_INCREMENT PRIMARY KEY,
+    descricao TEXT,
+
+    id_idoso INT,
+
+    FOREIGN KEY (id_idoso)
+        REFERENCES idoso(id_idoso)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ===================== NOTIFICACAO =====================
+CREATE TABLE notificacao (
+    id_notificacao INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(30),
+    mensagem TEXT,
+    data_envio_notificacao DATETIME NOT NULL
+) ENGINE=InnoDB;
+
+-- ===================== DESTINATARIO =====================
+CREATE TABLE destinatario (
+    id_destinatario INT AUTO_INCREMENT PRIMARY KEY,
+    id_notificacao INT NOT NULL,
+
+    id_responsavel INT NULL,
+    id_idoso INT NULL,
+
+    lida BOOLEAN DEFAULT FALSE,
+
+    FOREIGN KEY (id_notificacao)
+        REFERENCES notificacao(id_notificacao)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (id_responsavel)
+        REFERENCES responsavel(id_responsavel)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (id_idoso)
+        REFERENCES idoso(id_idoso)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;

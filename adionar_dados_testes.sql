@@ -17,10 +17,19 @@ values
 	('claudio ferrugem','51520386524','folhasSilva1','1964-10-05',2);
 
 # INSERINDO DADOS NA TABELA MEDICAMENTO
-insert into medicacao(nome_medicamento, valor_dose, unidade_medida, data_hora, status_tomado,id_idoso)
+insert into medicacao(nome_medicamento, valor_dose, unidade_medida, intervalo_dias, data_inicio, hora_alarme, continuo, status_tomado,id_idoso)
 values
-	('dipirona', '33', 'gotas','2026-04-25 21:35:00', false, 1),
-	('dipirona', '29', 'gotas','2026-03-01 22:50:00', true, 2),
-	('laxante', '3', 'colher','2026-02-22 19:50:00', false, 3),
-	('dipirona', '1', 'comprimido','2026-01-21 19:50:00', false, 1),
-	('dipirona', '1', 'mg','2026-02-20 18:00:00', true, 2);
+	('dipirona', '33', 'gotas','5','2026-04-25', '08:00:00', true, false, 1),
+	('dipirona', '31', 'gotas','1','2026-08-20', '20:00:00', true, true, 2),
+	('dipirona', '35', 'gotas','7','2026-04-08', '12:00:00', false, false, 1),
+	('dipirona', '28', 'gotas','30','2026-02-01', '10:00:00', false, true, 1);
+
+# INSERINDO DADOS NA TABELA LEMBRETE
+insert into lembrete(titulo, descricao, data_hora, endereco, id_idoso)
+values
+	('Consulta médica', 'Levar o Jefferson para sua consulta médica às 16:00 horas',
+    '2026-03-19 16:00:00', 'Rua Vale da Estranheza, 67, ao lado do bar do moe, centro, santana de parnaíba, SP, 06501-000', 2),
+	('Médico da Prostata', 'Exame de prostata',
+    '2025-02-20 08:30:00', 'Rua Manoel Gomes, 666, vila das santas, São Paulo, SP, 06480-000', 1),
+	('abc', 'Exame de prostata',
+    '2025-02-20 08:30:00', 'Rua Manoel Gomes, 666, vila das santas, São Paulo, SP, 06480-000', 3);
